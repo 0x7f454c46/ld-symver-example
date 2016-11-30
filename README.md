@@ -24,10 +24,14 @@ Readelf for p2:
 readelf -s p2 | grep xyz
      1: 0000000000000000     0 FUNC    GLOBAL DEFAULT  UND xyz@VER_2 (2)
     53: 0000000000000000     0 FUNC    GLOBAL DEFAULT  UND xyz@@VER_2
-replacing lib-v1.so with lib-v2.so
+swapping lib-v1.so <=> lib-v2.so
 cp lib-v2.so lib-v1.so
 Result of p1:
 LD_LIBRARY_PATH=. ./p1
 I'm original xyz()
+Result of p2 (expecting ld.so error):
+LD_LIBRARY_PATH=. ./p2
+./p2: ./lib-v2.so: version `VER_2' not found (required by ./p2)
+make: *** [Makefile:17: check] Error 1
 rm lib-v1.o lib-v2.o
 ```

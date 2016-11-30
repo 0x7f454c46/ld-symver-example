@@ -7,10 +7,14 @@ check: p1 p2 lib-v1.so lib-v2.so
 	readelf -s p1 | grep xyz
 	@echo Readelf for p2:
 	readelf -s p2 | grep xyz
-	@echo replacing lib-v1.so with lib-v2.so
-	cp lib-v2.so lib-v1.so
+	@echo 'swapping lib-v1.so <=> lib-v2.so'
+	mv lib-v1.so lib-old.so
+	mv lib-v2.so lib-v1.so
+	mv lib-old.so lib-v2.so
 	@echo Result of p1:
 	LD_LIBRARY_PATH=. ./p1
+	@echo 'Result of p2 (expecting ld.so error):'
+	LD_LIBRARY_PATH=. ./p2
 .PHONY: check
 
 %.so: %.o %.map
